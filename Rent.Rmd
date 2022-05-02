@@ -1,0 +1,111 @@
+---
+title: "Rent"
+output: 
+  html_document:
+    theme: cerulean
+    code_folding: hide
+    toc: true
+    toc_float: true
+---
+
+<!-- Welcome to the first Analysis for Math 325! 
+The goal of this first assignment is to have you produce a graphical summary and a numerical summary of the "Rent" data set. The fun part is that you get to decide what type of graph and what type of numerical summary to create! You will need to read through the "green text" instructions of this document to find the places where you are supposed to enter R-code in order to complete the assignment. -->
+
+
+**Week 1 Analysis**
+
+```{r, message=FALSE, warning=FALSE}
+# This gray area is called an "R-chunk". 
+# These library commands install some powerful functions for your use later on.
+library(mosaic)
+library(pander)
+library(tidyverse)
+library(DT) 
+
+# This read_csv command reads in the "Rent" data set into an object called "Rent"
+Rent <- read_csv("../Data/Rent.csv")
+
+# To load this data set into your R-Console do the following:
+#  1. From your top file menu select "Session -> Set Working Directory -> To Source File Location"
+#  2. Press the green "play button" in the top right corner of this gray box (which is called an "R-chunk").
+#  3. Then in your "Console" window of 
+```
+
+<br />
+
+## Background
+
+Here is a data table showing the available approved housing apartment options at BYU-Idaho for single students. There are 122 entries comprising 57 female and 65 male apartment options.
+
+```{r, warning=FALSE}
+# Code to get you started. 
+# View(...) works great in the Console, but datatable(...) must be
+# used instead within an R-chunk.
+datatable(Rent, options=list(lengthMenu = c(3,10,30)), extensions="Responsive")
+```
+
+
+## Graphic
+
+<!-- Present an interesting graphic using the Rent data set. Do not create the same graphics that are shown in the [Good Example Analysis](./Analyses/StudentHousing.html), but you can certainly use those graphics as a guide to inspire you on what to do yourself. -->
+
+
+```{r}
+# Use this R-chunk to...
+# ...Create an interesting graphic using the Rent data set.
+library(plotly)
+
+plot_ly(Rent,
+        x= ~PrivateRoomPrice,
+        y= ~Price,
+        color= ~Gender,
+        size= ~Capacity,
+        text= ~paste("Apartment:",
+                     Apartment,
+                     "\n",
+                     "Capacity:",
+                     Capacity,
+                     "\n",
+                     "Rent:",
+                     Price,
+                     "\n",
+                     "Private Room Cost:",
+                     PrivateRoomPrice),
+        colors= c("pink", "skyblue")) %>%
+        layout(title= "Rental Price of Private Rooms",
+                 xaxis= list(title= "Private Room Price"),
+                 yaxis= list(title= "Price"))
+
+```
+
+
+<!-- Write a few statements here that explain your graphic and what it shows. -->
+
+This graphic uses the plotly library to show the relation between the total cost of rent at an apartment complex in relation to the cost of a private room. Colors show if the housing is for males or females. Further information can be found about each plotted point by hovering over it.
+
+```{r}
+# Use this R-chunk to...
+# ...compute and display a meaningful table of numerical summaries supporting your above graphic.
+
+cor(Rent$Price, Rent$PrivateRoomPrice)
+
+library(tidyverse)
+Rent%>%
+  group_by(Apartment, Gender)%>%
+  summarise(corPrice= cor(Price, PrivateRoomPrice))
+
+  
+
+```
+
+<!-- Write a few statements here that introduce your table of numerical summaries and what they show. -->
+
+This table is supposed to represent the correlation between the cost of the apartment and the price of the private room, it is then grouped by the gender. It is not working, in it's current form -- I am not sure why; yet.
+
+
+## Conclusion
+
+The table and graph show that there is a strong positive correlation between the cost of the apartment and the cost of a private room with no outliers. This an be used to make a determination of where one should stay based upon other factors without worry that there may be a better deal. 
+
+
+
