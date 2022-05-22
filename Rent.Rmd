@@ -20,10 +20,12 @@ The goal of this first assignment is to have you produce a graphical summary and
 library(mosaic)
 library(pander)
 library(tidyverse)
-library(DT) 
+library(DT)
+library(car)
 
 # This read_csv command reads in the "Rent" data set into an object called "Rent"
 Rent <- read_csv("../Data/Rent.csv")
+view(Rent)
 
 # To load this data set into your R-Console do the following:
 #  1. From your top file menu select "Session -> Set Working Directory -> To Source File Location"
@@ -75,6 +77,11 @@ plot_ly(Rent,
         layout(title= "Rental Price of Private Rooms",
                  xaxis= list(title= "Private Room Price"),
                  yaxis= list(title= "Price"))
+
+
+pander(favstats(Rent$Price),
+       caption = "Rent Price")
+qqPlot(Rent$Price)
 
 ```
 

@@ -7,11 +7,11 @@ boxplot(length ~ sex, data=KidsFeet)
 
 KidsFeet %>%
   group_by(sex) %>%
-  sammarise(min=min(length),
-            Q1=quantile(length, 0.25),
-            med=median(length),
-            Q3=quantile(length, 0.75),
-            max=max(length) %>%
-              pander()
+  summarise(min= min(length),
+            Q1= quantile(length, 0.25),
+            med= median(length),
+            Q3= quantile(length, 0.75),
+            max= max(length) %>%
+              pander())
             
             

@@ -20,15 +20,23 @@ library(DT) # If you get an error stating:
             # You will need to run: install.packages("DT") 
             # in your Console, then try "Knit HTML" again.
 
-#RentMonthly <- Rent$Price / 3
-#RentMonthly
+
 
 Rent <- read_csv("../Data/Rent.csv")
-RentF <-   read_csv("../Data/Rent.csv") %>%
+RentF <-   read_csv("../Data/Rent.csv") %>% 
+  # Creates alterable copy of Rent
   mutate(RentMonthly = Price / 4) %>%
   filter(Gender == "F" & RentMonthly <= 300)
-RentF
-view(RentF)#filters the Rent table to only the female prices
+  # Filters the Rent table to only the female prices
+RentF 
+  # Calls new data set created above -- RentF
+pander(table(RentF$Apartment,
+             RentF$Price,
+             RentF$RentMonthly,
+             RentF$WalkingMinutes), 
+       caption= "Women's Housing less than $300")
+view(RentF)
+
 
 
 ```
