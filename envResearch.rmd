@@ -1,0 +1,54 @@
+---
+title: "Soapbox Thrifting Research"
+author: "Research Team"
+date: "Shane Robbins, Nikolai Baldwin, & Chase Giles"
+output: rmdformats::downcute
+---
+```{r Library, message=FALSE, warning=FALSE, echo=FALSE}
+
+library(pander)
+library(mosaic)
+library(rio)
+library(stringi)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+
+```
+
+```{r Import, message=FALSE, warning=FALSE, include=FALSE}
+
+read.csv(file = 'test.tsv', sep = '\t', header = TRUE)
+
+temp <- import('test.tsv')
+thrift <- data.frame(temp, thriftCat, thriftCnt)
+```
+
+
+```{r ThriftType, echo=FALSE, message=FALSE, warning=FALSE}
+
+statement <- as.matrix(c(temp$category_name))
+
+keywords <- as.matrix(c("Jewelry", "Jeans", "Women", "Men",
+                        "Electronic", "Media", "Makeup", "Book",
+                        "Kids", "Beauty", "Toys", "Athletic", "Pants",
+                        "Leggings", "Tights", "Pet", "Dog", "Cat",
+                        "Sweater", "Blouse", "Shoes", "Swimwear", 
+                        "Makeup", "Vintage", "Collectible"))
+
+thriftCat <- sapply(stri_extract_all_regex
+       (statement[,1],                  paste(keywords[,1], collapse = '|')), toString)
+
+thriftCnt <- str_count(thriftCat)
+
+hist(thriftCnt)
+
+table(thriftCat) %>%
+  pander()
+
+
+```
+
+
+
