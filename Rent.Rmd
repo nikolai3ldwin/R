@@ -22,6 +22,7 @@ library(pander)
 library(tidyverse)
 library(DT)
 library(car)
+library(ggpubr)
 
 # This read_csv command reads in the "Rent" data set into an object called "Rent"
 Rent <- read_csv("../Data/Rent.csv")
@@ -91,12 +92,18 @@ qqPlot(Rent$Price)
 This graphic uses the plotly library to show the relation between the total cost of rent at an apartment complex in relation to the cost of a private room. Colors show if the housing is for males or females. Further information can be found about each plotted point by hovering over it.
 
 ```{r}
+
+```
+
+
+```{r}
 # Use this R-chunk to...
 # ...compute and display a meaningful table of numerical summaries supporting your above graphic.
 
 cor(Rent$Price, Rent$PrivateRoomPrice)
+cor.test(Rent$Price, Rent$PrivateRoomPrice)
 
-library(tidyverse)
+#library(tidyverse)
 Rent%>%
   group_by(Apartment, Gender)%>%
   summarise(corPrice= cor(Price, PrivateRoomPrice))
@@ -107,7 +114,15 @@ Rent%>%
 
 <!-- Write a few statements here that introduce your table of numerical summaries and what they show. -->
 
-This table is supposed to represent the correlation between the cost of the apartment and the price of the private room, it is then grouped by the gender. It is not working, in it's current form -- I am not sure why; yet.
+This table and calculation represent the correlation (utilizing Pearson's Correlation (r)) between the cost of the apartment and the price of the private room, it is then grouped by the gender.
+
+```{r}
+#library("ggpubr")
+ggscatter(Rent, x = Rent$Price, y = Rent$PrivateRoomPrice, 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Miles/(US) gallon", ylab = "Weight (1000 lbs)")
+```
 
 
 ## Conclusion
