@@ -91,10 +91,12 @@ qqPlot(Rent$Price)
 
 This graphic uses the plotly library to show the relation between the total cost of rent at an apartment complex in relation to the cost of a private room. Colors show if the housing is for males or females. Further information can be found about each plotted point by hovering over it.
 
-```{r}
 
-```
+$$
+Y_i = \overbrace{\underbrace{\beta_0 + \beta_1 X_i}_{E\{Y_i\}}}^\text{Simple Model} + \epsilon_i
+$$
 
+The Equation being used for regression - to show correlation. 
 
 ```{r}
 # Use this R-chunk to...
@@ -118,10 +120,11 @@ This table and calculation represent the correlation (utilizing Pearson's Correl
 
 ```{r}
 #library("ggpubr")
-ggscatter(Rent, x = Rent$Price, y = Rent$PrivateRoomPrice, 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Miles/(US) gallon", ylab = "Weight (1000 lbs)")
+geomRent <- Rent %>% 
+ggplot(aes(y = Price, x = PrivateRoomPrice, color = Gender)) +
+  geom_jitter() +
+  geom_smooth() +theme_classic()
+show(geomRent)
 ```
 
 
